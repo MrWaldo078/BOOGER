@@ -30,7 +30,6 @@ jobs:
           source venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-          pip install py2app
 
       - name: Build native sync extension
         run: |
