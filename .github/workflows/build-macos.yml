@@ -31,6 +31,16 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Build native sync extension
+        run: |
+          gcc -fPIC -bundle -undefined dynamic_lookup \
+            -o libsync.so path/to/sync.c
+            
+      - name: Bundle .app with py2app
+        run: |
+          python3 setup.py py2app
+
+
       - name: Build .app with py2app
         run: |
           source venv/bin/activate
