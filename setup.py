@@ -47,7 +47,6 @@ setup(
         "importlib-resources",
         "more-itertools",
         "pathlib2",
-        "pytest-ruff",
     ],
     setup_requires=[
         "py2app",
@@ -58,7 +57,6 @@ setup(
         "importlib-resources",
         "more-itertools",
         "pathlib2",
-        "pytest-ruff",
     ],
     ext_modules=[sync_ext],
 )
