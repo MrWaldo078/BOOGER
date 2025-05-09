@@ -4,7 +4,7 @@ from setuptools import setup, Extension
 # Build the C++ sync extension as part of this setup
 sync_ext = Extension(
     name="sync",
-    sources=["BOOGER/sync.cpp"],        # C++ source file in BOOGER directory
+    sources=["sync.cpp"],        # C++ source file in BOOGER directory
     extra_compile_args=["-fPIC", "-std=c++11"],
     extra_link_args=["-bundle", "-undefined", "dynamic_lookup"],
     language="c++",
