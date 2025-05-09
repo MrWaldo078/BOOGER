@@ -39,8 +39,10 @@ setup(
     app=APP,
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
-    install_requires=[
-        "jaraco.text>=4.0",
+    install_requires=[],
+    setup_requires=[
+        'py2app',
+        'jaraco.text>=4.0',
     ],
     setup_requires=['py2app'],
     ext_modules=[sync_ext],
