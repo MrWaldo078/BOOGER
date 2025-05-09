@@ -44,7 +44,7 @@ jobs:
           python setup.py py2app
 
       - name: Upload .app artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: PolarGarminSyncSplit-macos
           path: dist/PolarGarminSyncSplit.app
