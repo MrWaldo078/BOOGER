@@ -26,11 +26,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip wheel
+          # install all Python dependencies before building the app
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install numpy fitparse fitdecode fit_tool
+          fi
           pip install py2app
+
 
       - name: Build native sync extension
         run: |
