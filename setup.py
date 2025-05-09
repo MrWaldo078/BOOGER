@@ -44,6 +44,5 @@ setup(
         'py2app',
         'jaraco.text>=4.0',
     ],
-    setup_requires=['py2app'],
     ext_modules=[sync_ext],
 )
