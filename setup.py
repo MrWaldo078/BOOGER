@@ -39,6 +39,9 @@ setup(
     app=APP,
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
+    install_requires=[
+        "jaraco.text>=4.0",
+    ],
     setup_requires=['py2app'],
-    ext_modules=[sync_ext],    # build BOOGER/sync.cpp into sync.so
+    ext_modules=[sync_ext],
 )
