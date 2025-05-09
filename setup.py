@@ -1,12 +1,13 @@
-# Updated setup.py for py2app bundling with native sync library
+# Updated setup.py for py2app bundling with native sync library (C++ version)
 from setuptools import setup, Extension
 
-# If you want to build the sync extension as part of this setup, uncomment ext_modules and ensure sync.c is present
+# Build the C++ sync extension as part of this setup
 sync_ext = Extension(
     name="sync",
-    sources=["sync.c"],                # only if building here
-    extra_compile_args=["-fPIC"],
+    sources=["BOOGER/sync.cpp"],        # C++ source file in BOOGER directory
+    extra_compile_args=["-fPIC", "-std=c++11"],
     extra_link_args=["-bundle", "-undefined", "dynamic_lookup"],
+    language="c++",
 )
 
 APP = ['main.py']
@@ -39,5 +40,5 @@ setup(
     data_files=DATA_FILES,
     options={'py2app': OPTIONS},
     setup_requires=['py2app'],
-    # ext_modules=[sync_ext],    # uncomment to build sync.c here
+    ext_modules=[sync_ext],    # build BOOGER/sync.cpp into sync.so
 )
