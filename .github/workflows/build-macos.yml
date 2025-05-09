@@ -1,4 +1,3 @@
-```yaml
 name: Build macOS App
 
 on:
@@ -48,4 +47,3 @@ jobs:
         with:
           name: PolarGarminSyncSplit-macos
           path: dist/PolarGarminSyncSplit.app
-```
