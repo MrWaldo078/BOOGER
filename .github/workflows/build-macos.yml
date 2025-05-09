@@ -1,76 +1,51 @@
+```yaml
 name: Build macOS App
 
 on:
   push:
-    tags:
-      - 'v*'            # e.g. v1.0, v1.1
-  workflow_dispatch:   # manual trigger
+    branches: [ main ]
+  pull_request:
 
 jobs:
   build:
     runs-on: macos-latest
 
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Build C++ sync library
-        run: |
-          clang++ -std=c++11 -dynamiclib -undefined dynamic_lookup \
-                  -o libsync.so sync.cpp
-
-      - name: Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-
-      - name: Create and activate virtual environment
-        run: |
-          python3 -m venv venv
-          source venv/bin/activate
+          python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
         run: |
-          source venv/bin/activate
-          # Upgrade pip and ensure setuptools & wheel are present
-          python -m pip install --upgrade pip
-          pip install setuptools wheel
-          # install all Python dependencies before building the app
+          python -m pip install --upgrade pip setuptools wheel
           if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
+            python -m pip install -r requirements.txt
           else
-            pip install numpy fitparse fitdecode fit_tool
+            python -m pip install numpy fitparse fitdecode fit_tool
           fi
-          # install py2app last
-          pip install py2app
-
+          python -m pip install py2app
 
       - name: Build native sync extension
         run: |
           clang++ -fPIC -bundle -undefined dynamic_lookup \
-          -std=c++11 \
-          -o libsync.so sync.cpp
-
-            
-      - name: Bundle .app with py2app
-        run: |
-          python3 setup.py py2app
-
+              -std=c++11 \
+              -o libsync.so BOOGER/sync.cpp
 
       - name: Build .app with py2app
         run: |
-          source venv/bin/activate
           python setup.py py2app
 
-      - name: Zip the .app bundle
-        run: |
-          cd dist
-          ditto -c -k --sequesterRsrc --keepParent \
-            PolarGarminSyncSplit.app PolarGarminSyncSplit.zip
-          mv PolarGarminSyncSplit.zip $GITHUB_WORKSPACE
-          
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload .app artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: macos-app
-          path: PolarGarminSyncSplit.zip
+          name: PolarGarminSyncSplit-macos
+          path: dist/PolarGarminSyncSplit.app
+```
