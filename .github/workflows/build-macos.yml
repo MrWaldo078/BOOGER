@@ -18,6 +18,7 @@ jobs:
         run: |
           clang++ -std=c++11 -dynamiclib -undefined dynamic_lookup \
                   -o libsync.so sync.cpp
+                  
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -33,6 +34,15 @@ jobs:
             pip install numpy fitparse fitdecode fit_tool
           fi
           pip install py2app
+
+      - name: Create and activate virtualenv
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip setuptools py2app
+          pip install -r requirements.txt
+
+      
       - name: Build native sync extension
         run: |
           clang++ -fPIC -bundle -undefined dynamic_lookup \
@@ -42,10 +52,12 @@ jobs:
       - name: Bundle .app with py2app
         run: |
           python3 setup.py py2app
+          
       - name: Build .app with py2app
         run: |
           source venv/bin/activate
           python setup.py py2app
+          
       - name: Zip the .app bundle
         run: |
           cd dist
