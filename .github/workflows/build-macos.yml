@@ -34,7 +34,9 @@ jobs:
       - name: Build native sync extension
         run: |
           gcc -fPIC -bundle -undefined dynamic_lookup \
-            -o libsync.so BOOGER/sync.cpp
+          - std=c++11 \
+          -o libsync.so BOOGER/sync.cpp
+
             
       - name: Bundle .app with py2app
         run: |
